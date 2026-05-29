@@ -1,0 +1,208 @@
+{
+  "main": {
+    "id": "c423416f610b888a",
+    "type": "split",
+    "children": [
+      {
+        "id": "aec4efcf23d2d891",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "23b5a965425d1907",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "notes/v1-artifact-testing.md",
+                "mode": "preview",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "v1-artifact-testing"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "9a377f76ee4d0439",
+    "type": "split",
+    "children": [
+      {
+        "id": "e8a0482e05ab8bbd",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "d5262fb0ac4bb3c1",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "d763050f5162d1d1",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "9f3c56341115cb4f",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "6d2f05878ce156e5",
+    "type": "split",
+    "children": [
+      {
+        "id": "b614c0daef8c5587",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "3a9802b867771e53",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "notes/v1-artifact-testing.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for v1-artifact-testing"
+            }
+          },
+          {
+            "id": "83292bc23a9d2dc1",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "notes/v1-artifact-testing.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from v1-artifact-testing"
+            }
+          },
+          {
+            "id": "8a150af5367c0c10",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "84879f98cf30472d",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "c3963eb2827a62f7",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "notes/v1-artifact-testing.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of v1-artifact-testing"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "23b5a965425d1907",
+  "lastOpenFiles": [
+    "mpv-shot0001.jpg",
+    "director-cut-execution-plan.md",
+    "director-cut-planning-prompt.md",
+    "agents.md",
+    "mpv-retro-shaders-master/README.md",
+    "scripts/generate_clip_chain/README.md",
+    "renders/transition_hunt_glitch.mpg",
+    "renders/transition_hunt_12m.mp4",
+    "notes/v1-artifact-testing.md",
+    "scripts/generate_clip_chain/generate_clip_chain.sh",
+    "scripts/generate_clip_chain",
+    "scripts",
+    "renders/cert_test_60s_glitch_soft.mp4",
+    "renders/cert_test_60s_glitch.mp4",
+    "renders/cert_test_60s_glitch_soft.mpg",
+    "renders/cert_test_60s_glitch.mpg",
+    "renders/transition_hunt_raw_from_12s_to_end.mp4",
+    "notes/README.md",
+    "generate-clip-chain.md"
+  ]
+}
