@@ -7,7 +7,7 @@ Usage:
   ./generate_clip_chain.sh [MODE] [INPUT_FILE] [OUTPUT_DIR]
 
 Arguments:
-  MODE         Mode to run: hunt | crop | glitch | dev (default: hunt)
+  MODE         Mode to run: hunt | crop | glitch | dev (required)
                hunt  — expects a pre-cropped file as INPUT_FILE
                crop  — removes pillarbox and scales to 960x720 intermediate
                glitch — applies artifact+safety chain, encodes MPEG2
@@ -41,14 +41,14 @@ if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
   exit 0
 fi
 
-MODE="hunt"
 if [[ "${1:-}" == "hunt" || "${1:-}" == "crop" || "${1:-}" == "glitch" || "${1:-}" == "dev" ]]; then
   MODE="$1"
   INPUT_FILE="${2:-}"
   OUT_DIR="${3:-./renders}"
 else
-  INPUT_FILE="${1:-}"
-  OUT_DIR="${2:-./renders}"
+  echo "Error: MODE is required. Must be one of: hunt | crop | glitch | dev" >&2
+  print_help
+  exit 1
 fi
 
 if [[ -z "$INPUT_FILE" ]]; then

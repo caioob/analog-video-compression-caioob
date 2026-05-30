@@ -17,3 +17,5 @@ Human-friendly operational notes for this project.
 - `v3-glitch-spec.md` - glitch primitive: filter chain rationale, output contract, and test assertions.
 - `v4-hunt-spec.md` - hunt primitive: output contract, parameterization, and test assertions.
 - `v5-dev-spec.md` - dev mode: 3-minute crop → glitch → clean + 2 shader-baked outputs for DEV-stage review.
+- `v6-path-audit.md` - path audit: CWD-relative and unresolved path findings across pipeline scripts.
+- `v7-mode-audit.md` - mode inconsistency audit: stale filenames, missing mode references, implicit invocation removed.

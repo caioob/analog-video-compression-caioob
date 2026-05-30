@@ -58,7 +58,7 @@ GLITCH_NOISE=10 ./scripts/generate_clip_chain/generate_clip_chain.sh dev source.
 | `HUNT_LENGTH` | `00:12:00` | hunt |
 | `CROP_START` | `00:00:00` | crop |
 | `CROP_LENGTH` | `00:12:00` | crop |
-| `CROP_FILTER` | `crop=1440:1072:240:4` | crop |
+| `CROP_FILTER` | `crop=1440:1072:240:4` | crop, dev |
 | `GLITCH_OUT` | `glitch.mpg` | glitch |
 | `GLITCH_NOISE` | `15` | glitch, dev |
 | `DEV_START` | `00:00:00` | dev |

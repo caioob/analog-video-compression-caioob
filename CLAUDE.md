@@ -68,16 +68,16 @@ Always run the **clean truth check first** before enabling any shader:
 
 ```bash
 # 1. Raw field behavior check (required first)
-mpv --no-deinterlace "renders/transition_hunt_glitch.mpg"
+mpv --no-deinterlace "renders/dev.mpg"
 
 # 2. Composite-like CRT preview on modern monitor
-mpv --no-deinterlace --glsl-shader="./mpv-retro-shaders-master/crt-guest-advanced-ntsc.glsl" "renders/transition_hunt_glitch.mpg"
+mpv --no-deinterlace --glsl-shader="./mpv-retro-shaders-master/crt-guest-advanced-ntsc.glsl" "renders/dev.mpg"
 
 # 3. Second aesthetic reference
-mpv --no-deinterlace --glsl-shader="./mpv-retro-shaders-master/crt-royale-kurozumi-intel.glsl" "renders/transition_hunt_glitch.mpg"
+mpv --no-deinterlace --glsl-shader="./mpv-retro-shaders-master/crt-royale-kurozumi-intel.glsl" "renders/dev.mpg"
 
 # Stream/field metadata
-ffprobe -hide_banner -select_streams v:0 -show_streams renders/transition_hunt_glitch.mpg
+ffprobe -hide_banner -select_streams v:0 -show_streams renders/dev.mpg
 ```
 
 Shaders are preview-only for modern monitor review. Technical decisions (field order, combing) must be made from the clean pass.
