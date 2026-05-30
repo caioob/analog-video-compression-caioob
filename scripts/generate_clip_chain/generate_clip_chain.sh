@@ -12,8 +12,8 @@ Arguments:
                crop  — removes pillarbox and scales to 960x720 intermediate
                glitch — applies artifact+safety chain, encodes MPEG2
                dev   — crop 3m → glitch → dev.mpg + 2 shader-baked mp4s
-  INPUT_FILE   Source video file (required)
-  OUTPUT_DIR   Output directory (default: ./renders)
+  INPUT_FILE   Source video file (required; use absolute path for non-interactive use)
+  OUTPUT_DIR   Output directory (default: ./renders; use absolute path for non-interactive use)
 
 Environment overrides:
   HUNT_START    Start time for hunt clip       (default: 00:00:00)
@@ -67,12 +67,13 @@ GLITCH_NOISE="${GLITCH_NOISE:-15}"
 DEV_START="${DEV_START:-00:00:00}"
 DEV_LENGTH="${DEV_LENGTH:-180}"
 
-mkdir -p "$OUT_DIR"
-
 if [[ ! -f "$INPUT_FILE" ]]; then
   echo "Input not found: $INPUT_FILE" >&2
   exit 1
 fi
+
+mkdir -p "$OUT_DIR"
+OUT_DIR="$(cd "$OUT_DIR" && pwd)"
 
 run_hunt() {
   echo "Building hunt preview clip..."
@@ -93,7 +94,8 @@ run_crop() {
 run_dev() {
   local script_dir
   script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-  local shader_dir="$script_dir/../../mpv-retro-shaders-master"
+  local shader_dir
+  shader_dir="$(cd "$script_dir/../../mpv-retro-shaders-master" && pwd)"
   local guest_shader="$shader_dir/crt-guest-advanced-ntsc.glsl"
   local royale_shader="$shader_dir/crt-royale-kurozumi-intel.glsl"
 
@@ -105,7 +107,7 @@ run_dev() {
   fi
 
   local tmp_crop
-  tmp_crop=$(mktemp /tmp/dev_crop_XXXXXX.mp4)
+  tmp_crop=$(mktemp --suffix=.mp4)
 
   echo "[1/4] Cropping ${DEV_LENGTH}s from ${DEV_START}..."
   ffmpeg -y -ss "$DEV_START" -i "$INPUT_FILE" -t "$DEV_LENGTH" \
@@ -128,7 +130,8 @@ run_dev() {
     --o="$OUT_DIR/dev_guest_ntsc.mp4" \
     --ovc=libx264 \
     --ovcopts=crf=18,preset=medium \
-    "$OUT_DIR/dev.mpg"
+    "$OUT_DIR/dev.mpg" &
+  local guest_pid=$!
 
   echo "[4/4] Rendering with Royale Kurozumi shader..."
   mpv --no-config --no-audio --no-deinterlace \
@@ -137,6 +140,8 @@ run_dev() {
     --ovc=libx264 \
     --ovcopts=crf=18,preset=medium \
     "$OUT_DIR/dev.mpg"
+
+  wait $guest_pid
 }
 
 run_glitch() {
