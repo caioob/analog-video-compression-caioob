@@ -195,9 +195,89 @@ test_glitch() {
   rm -rf "$tmp_dir"
 }
 
+test_dev() {
+  echo "test_dev"
+  local tmp_dir
+  tmp_dir=$(mktemp -d)
+
+  DEV_START=00:10:00 DEV_LENGTH=5 \
+    "$SCRIPT" dev "$SOURCE" "$tmp_dir"
+
+  # dev.mpg — full glitch assertions
+  local mpg="$tmp_dir/dev.mpg"
+
+  if [[ ! -f "$mpg" ]]; then
+    fail "dev.mpg missing"
+    rm -rf "$tmp_dir"
+    return
+  fi
+  pass "dev.mpg exists"
+
+  local codec
+  codec=$(ffprobe -v error -select_streams v:0 \
+    -show_entries stream=codec_name \
+    -of default=noprint_wrappers=1:nokey=1 "$mpg")
+  [[ "$codec" == "mpeg2video" ]] \
+    && pass "dev.mpg codec is mpeg2video" \
+    || fail "dev.mpg codec is '$codec' (expected mpeg2video)"
+
+  local width height
+  width=$(ffprobe -v error -select_streams v:0 \
+    -show_entries stream=width \
+    -of default=noprint_wrappers=1:nokey=1 "$mpg")
+  height=$(ffprobe -v error -select_streams v:0 \
+    -show_entries stream=height \
+    -of default=noprint_wrappers=1:nokey=1 "$mpg")
+  [[ "$width" == "720" && "$height" == "480" ]] \
+    && pass "dev.mpg resolution is 720x480" \
+    || fail "dev.mpg resolution is ${width}x${height} (expected 720x480)"
+
+  local field_order
+  field_order=$(ffprobe -v error -select_streams v:0 \
+    -show_entries stream=field_order \
+    -of default=noprint_wrappers=1:nokey=1 "$mpg")
+  [[ "$field_order" == "bb" ]] \
+    && pass "dev.mpg field_order is bb" \
+    || fail "dev.mpg field_order is '$field_order' (expected bb)"
+
+  local audio_streams
+  audio_streams=$(ffprobe -v error -select_streams a \
+    -show_entries stream=codec_type \
+    -of default=noprint_wrappers=1:nokey=1 "$mpg")
+  [[ -z "$audio_streams" ]] \
+    && pass "dev.mpg no audio stream" \
+    || fail "dev.mpg unexpected audio stream"
+
+  # Shader-baked outputs — file exists + h264 codec
+  for name in dev_guest_ntsc dev_royale_kurozumi; do
+    local mp4="$tmp_dir/${name}.mp4"
+    if [[ ! -f "$mp4" ]]; then
+      fail "${name}.mp4 missing"
+      continue
+    fi
+    pass "${name}.mp4 exists"
+
+    local sh_codec
+    sh_codec=$(ffprobe -v error -select_streams v:0 \
+      -show_entries stream=codec_name \
+      -of default=noprint_wrappers=1:nokey=1 "$mp4")
+    [[ "$sh_codec" == "h264" ]] \
+      && pass "${name}.mp4 codec is h264" \
+      || fail "${name}.mp4 codec is '$sh_codec' (expected h264)"
+  done
+
+  if [[ "$VISUAL" -eq 1 ]]; then
+    echo "  Opening dev.mpg in mpv..."
+    mpv --no-deinterlace "$mpg"
+  fi
+
+  rm -rf "$tmp_dir"
+}
+
 test_run_hunt
 test_crop
 test_glitch
+test_dev
 
 echo
 echo "Results: $PASS passed, $FAIL failed"

@@ -16,3 +16,4 @@ Human-friendly operational notes for this project.
 - `v2-crop-spec.md` - crop primitive: output contract, parameterization, and test assertions.
 - `v3-glitch-spec.md` - glitch primitive: filter chain rationale, output contract, and test assertions.
 - `v4-hunt-spec.md` - hunt primitive: output contract, parameterization, and test assertions.
+- `v5-dev-spec.md` - dev mode: 3-minute crop → glitch → clean + 2 shader-baked outputs for DEV-stage review.

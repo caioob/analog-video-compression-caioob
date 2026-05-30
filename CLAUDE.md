@@ -48,15 +48,19 @@ Softer noise variant: set `GLITCH_NOISE=10` (default is 15).
 # Glitch — full artifact+safety chain → MPEG2
 INPUT_FILE=renders/cropped.mp4 ./scripts/generate_clip_chain/generate_clip_chain.sh glitch
 
+# Dev — 3-minute crop → glitch → dev.mpg + 2 shader-baked mp4s
+./scripts/generate_clip_chain/generate_clip_chain.sh dev
+
 # Override timing / noise
 HUNT_START=00:10:00 HUNT_LENGTH=30 ./scripts/generate_clip_chain/generate_clip_chain.sh hunt cropped.mp4
 CROP_START=00:10:00 CROP_LENGTH=60 ./scripts/generate_clip_chain/generate_clip_chain.sh crop
 GLITCH_NOISE=10 GLITCH_OUT=soft.mpg ./scripts/generate_clip_chain/generate_clip_chain.sh glitch
+DEV_START=00:22:00 GLITCH_NOISE=10 ./scripts/generate_clip_chain/generate_clip_chain.sh dev
 ```
 
 Default input: `theThirdTransmission.mp4`. Default output: `./renders/`.
 
-Environment overrides: `HUNT_START`, `HUNT_LENGTH`, `CROP_START`, `CROP_LENGTH`, `CROP_FILTER`, `GLITCH_OUT`, `GLITCH_NOISE`.
+Environment overrides: `HUNT_START`, `HUNT_LENGTH`, `CROP_START`, `CROP_LENGTH`, `CROP_FILTER`, `GLITCH_OUT`, `GLITCH_NOISE`, `DEV_START`, `DEV_LENGTH`.
 
 ## Inspection Commands
 
@@ -85,13 +89,14 @@ Shaders are preview-only for modern monitor review. Technical decisions (field o
 
 ## Pipeline Primitives
 
-The three primitive output types of the pipeline:
+Three primitives and one composition mode:
 
-| Primitive | What it does | Output |
-|-----------|-------------|--------|
+| Mode | What it does | Output |
+|------|-------------|--------|
 | **hunt** | Time extraction + scale + H.264 encode. Clean scrub preview — no crop, no glitch. Expects pre-cropped input. | `hunt.mp4` |
 | **crop** | Removes 1080p pillarbox from 4:3 content, scales to 960×720 intermediate. | `cropped.mp4` |
 | **glitch** | Full artifact+safety chain (eq, lutyuv, noise, tinterlace) → MPEG2 encode. | `*.mpg` |
+| **dev** | Composition: 3-minute crop → glitch → clean MPEG2 + 2 shader-baked H.264 previews. | `dev.mpg`, `dev_guest_ntsc.mp4`, `dev_royale_kurozumi.mp4` |
 
 ## Test Suite
 
@@ -112,6 +117,7 @@ Exits non-zero if any assertion fails.
 | `test_run_hunt` | hunt | codec h264, resolution 960×720, duration ±1s, audio stream present (tested at 2s, 5s, 8s) |
 | `test_crop` | crop | output resolution 960×720, audio stream present |
 | `test_glitch` | glitch | codec mpeg2video, resolution 720×480, field_order bb, no audio |
+| `test_dev` | dev | dev.mpg: mpeg2video, 720×480, field_order bb, no audio; shader mp4s: h264, file exists |
 
 ### Adding a test
 
