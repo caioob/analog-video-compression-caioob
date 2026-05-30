@@ -27,10 +27,10 @@ Always execute stages sequentially: DEV → CERT → PROD.
 
 ```bash
 # DEV review render — crop 3 minutes, glitch, preview with and without CRT shaders
-./scripts/generate_clip_chain/generate_clip_chain.sh dev
+./scripts/generate_clip_chain/generate_clip_chain.sh dev source.mp4
 
 # Custom start time
-DEV_START=00:22:00 ./scripts/generate_clip_chain/generate_clip_chain.sh dev
+DEV_START=00:22:00 ./scripts/generate_clip_chain/generate_clip_chain.sh dev source.mp4
 
 # Inspect output — always clean pass first
 mpv --no-deinterlace renders/dev.mpg

@@ -12,7 +12,7 @@ Arguments:
                crop  — removes pillarbox and scales to 960x720 intermediate
                glitch — applies artifact+safety chain, encodes MPEG2
                dev   — crop 3m → glitch → dev.mpg + 2 shader-baked mp4s
-  INPUT_FILE   Source video file (default: theThirdTransmission.mp4)
+  INPUT_FILE   Source video file (required)
   OUTPUT_DIR   Output directory (default: ./renders)
 
 Environment overrides:
@@ -29,10 +29,10 @@ Environment overrides:
 Examples:
   ./generate_clip_chain.sh hunt cropped.mp4
   HUNT_START=00:10:00 HUNT_LENGTH=30 ./generate_clip_chain.sh hunt cropped.mp4
-  CROP_START=00:10:00 CROP_LENGTH=60 ./generate_clip_chain.sh crop
-  INPUT_FILE=renders/cropped.mp4 GLITCH_OUT=out.mpg ./generate_clip_chain.sh glitch
-  ./generate_clip_chain.sh dev
-  DEV_START=00:22:00 ./generate_clip_chain.sh dev
+  CROP_START=00:10:00 CROP_LENGTH=60 ./generate_clip_chain.sh crop source.mp4
+  GLITCH_OUT=out.mpg ./generate_clip_chain.sh glitch cropped.mp4
+  ./generate_clip_chain.sh dev source.mp4
+  DEV_START=00:22:00 ./generate_clip_chain.sh dev source.mp4
 EOF
 }
 
@@ -44,11 +44,17 @@ fi
 MODE="hunt"
 if [[ "${1:-}" == "hunt" || "${1:-}" == "crop" || "${1:-}" == "glitch" || "${1:-}" == "dev" ]]; then
   MODE="$1"
-  INPUT_FILE="${2:-theThirdTransmission.mp4}"
+  INPUT_FILE="${2:-}"
   OUT_DIR="${3:-./renders}"
 else
-  INPUT_FILE="${1:-theThirdTransmission.mp4}"
+  INPUT_FILE="${1:-}"
   OUT_DIR="${2:-./renders}"
+fi
+
+if [[ -z "$INPUT_FILE" ]]; then
+  echo "Error: INPUT_FILE is required." >&2
+  print_help
+  exit 1
 fi
 
 HUNT_START="${HUNT_START:-00:00:00}"

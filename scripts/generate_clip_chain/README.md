@@ -23,25 +23,25 @@ All files are written to `./renders` by default.
 
 ```bash
 # Hunt — scrub preview from a pre-cropped file
-./scripts/generate_clip_chain/generate_clip_chain.sh hunt renders/cropped.mp4
+./scripts/generate_clip_chain/generate_clip_chain.sh hunt cropped.mp4
 
 # Crop — remove pillarbox from raw source
-./scripts/generate_clip_chain/generate_clip_chain.sh crop
+./scripts/generate_clip_chain/generate_clip_chain.sh crop source.mp4
 
 # Glitch — apply full artifact+safety chain
-./scripts/generate_clip_chain/generate_clip_chain.sh glitch renders/cropped.mp4
+./scripts/generate_clip_chain/generate_clip_chain.sh glitch cropped.mp4
 
 # Dev — 3-minute crop → glitch → clean + shader renders
-./scripts/generate_clip_chain/generate_clip_chain.sh dev
+./scripts/generate_clip_chain/generate_clip_chain.sh dev source.mp4
 
 # Override timing
-HUNT_START=00:10:00 HUNT_LENGTH=30 ./scripts/generate_clip_chain/generate_clip_chain.sh hunt renders/cropped.mp4
-CROP_START=00:10:00 CROP_LENGTH=60 ./scripts/generate_clip_chain/generate_clip_chain.sh crop
-DEV_START=00:22:00 ./scripts/generate_clip_chain/generate_clip_chain.sh dev
+HUNT_START=00:10:00 HUNT_LENGTH=30 ./scripts/generate_clip_chain/generate_clip_chain.sh hunt cropped.mp4
+CROP_START=00:10:00 CROP_LENGTH=60 ./scripts/generate_clip_chain/generate_clip_chain.sh crop source.mp4
+DEV_START=00:22:00 ./scripts/generate_clip_chain/generate_clip_chain.sh dev source.mp4
 
 # Softer noise
-GLITCH_NOISE=10 GLITCH_OUT=soft.mpg ./scripts/generate_clip_chain/generate_clip_chain.sh glitch renders/cropped.mp4
-GLITCH_NOISE=10 ./scripts/generate_clip_chain/generate_clip_chain.sh dev
+GLITCH_NOISE=10 GLITCH_OUT=soft.mpg ./scripts/generate_clip_chain/generate_clip_chain.sh glitch cropped.mp4
+GLITCH_NOISE=10 ./scripts/generate_clip_chain/generate_clip_chain.sh dev source.mp4
 ```
 
 ## Help

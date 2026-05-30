@@ -43,22 +43,22 @@ Softer noise variant: set `GLITCH_NOISE=10` (default is 15).
 ./scripts/generate_clip_chain/generate_clip_chain.sh hunt cropped.mp4
 
 # Crop — remove 1080p pillarbox and produce 960×720 intermediate
-./scripts/generate_clip_chain/generate_clip_chain.sh crop
+./scripts/generate_clip_chain/generate_clip_chain.sh crop source.mp4
 
 # Glitch — full artifact+safety chain → MPEG2
-INPUT_FILE=renders/cropped.mp4 ./scripts/generate_clip_chain/generate_clip_chain.sh glitch
+./scripts/generate_clip_chain/generate_clip_chain.sh glitch cropped.mp4
 
 # Dev — 3-minute crop → glitch → dev.mpg + 2 shader-baked mp4s
-./scripts/generate_clip_chain/generate_clip_chain.sh dev
+./scripts/generate_clip_chain/generate_clip_chain.sh dev source.mp4
 
 # Override timing / noise
 HUNT_START=00:10:00 HUNT_LENGTH=30 ./scripts/generate_clip_chain/generate_clip_chain.sh hunt cropped.mp4
-CROP_START=00:10:00 CROP_LENGTH=60 ./scripts/generate_clip_chain/generate_clip_chain.sh crop
-GLITCH_NOISE=10 GLITCH_OUT=soft.mpg ./scripts/generate_clip_chain/generate_clip_chain.sh glitch
-DEV_START=00:22:00 GLITCH_NOISE=10 ./scripts/generate_clip_chain/generate_clip_chain.sh dev
+CROP_START=00:10:00 CROP_LENGTH=60 ./scripts/generate_clip_chain/generate_clip_chain.sh crop source.mp4
+GLITCH_NOISE=10 GLITCH_OUT=soft.mpg ./scripts/generate_clip_chain/generate_clip_chain.sh glitch cropped.mp4
+DEV_START=00:22:00 GLITCH_NOISE=10 ./scripts/generate_clip_chain/generate_clip_chain.sh dev source.mp4
 ```
 
-Default input: `theThirdTransmission.mp4`. Default output: `./renders/`.
+INPUT_FILE is required. Default output: `./renders/`.
 
 Environment overrides: `HUNT_START`, `HUNT_LENGTH`, `CROP_START`, `CROP_LENGTH`, `CROP_FILTER`, `GLITCH_OUT`, `GLITCH_NOISE`, `DEV_START`, `DEV_LENGTH`.
 

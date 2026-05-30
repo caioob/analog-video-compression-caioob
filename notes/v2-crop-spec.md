@@ -50,8 +50,8 @@ Duration assertion is optional; crop clips are long enough that short timing dri
 ## Invocation
 
 ```bash
-# Default: crops theThirdTransmission.mp4 starting at 00:00:00 for 12 minutes, audio kept
-./scripts/generate_clip_chain/generate_clip_chain.sh crop
+# Default window: from 00:00:00 for 12 minutes, audio kept
+./scripts/generate_clip_chain/generate_clip_chain.sh crop source.mp4
 
 # Custom window
 CROP_START=00:10:00 CROP_LENGTH=60 ./scripts/generate_clip_chain/generate_clip_chain.sh crop
