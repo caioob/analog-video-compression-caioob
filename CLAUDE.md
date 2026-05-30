@@ -56,7 +56,7 @@ GLITCH_NOISE=10 GLITCH_OUT=soft.mpg ./scripts/generate_clip_chain/generate_clip_
 
 Default input: `theThirdTransmission.mp4`. Default output: `./renders/`.
 
-Environment overrides: `HUNT_START`, `HUNT_LENGTH`, `CROP_START`, `CROP_LENGTH`, `CROP_FILTER`, `CROP_NO_AUDIO`, `GLITCH_OUT`, `GLITCH_NOISE`.
+Environment overrides: `HUNT_START`, `HUNT_LENGTH`, `CROP_START`, `CROP_LENGTH`, `CROP_FILTER`, `GLITCH_OUT`, `GLITCH_NOISE`.
 
 ## Inspection Commands
 
@@ -109,14 +109,9 @@ Exits non-zero if any assertion fails.
 
 | Test | Primitive | Asserts |
 |------|-----------|---------|
-| `test_run_hunt` | hunt | codec h264, resolution 960×720, duration ±1s, no audio (tested at 2s, 5s, 8s) |
-
-### Planned coverage
-
-| Test | Primitive | Asserts |
-|------|-----------|---------|
-| `test_crop` | crop | output resolution 960×720, audio stream present; with `CROP_NO_AUDIO=1` no audio |
-| `test_glitch` | glitch | codec mpeg2video, field_order bb (proves tinterlace fired) |
+| `test_run_hunt` | hunt | codec h264, resolution 960×720, duration ±1s, audio stream present (tested at 2s, 5s, 8s) |
+| `test_crop` | crop | output resolution 960×720, audio stream present |
+| `test_glitch` | glitch | codec mpeg2video, resolution 720×480, field_order bb, no audio |
 
 ### Adding a test
 

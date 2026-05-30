@@ -7,4 +7,5 @@ This directory is the canonical home for executable project scripts.
 - Each script subdirectory must include a `README.md` with usage, examples, and outputs.
 
 ## Available scripts
-- `generate_clip_chain/` - Builds hunt, cert, and client artifact clips.
+- `generate_clip_chain/` - Runs the three pipeline primitives: hunt, crop, and glitch.
+- `tests/` - Test suite for pipeline scripts.

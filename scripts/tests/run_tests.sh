@@ -66,9 +66,9 @@ test_run_hunt() {
     audio_streams=$(ffprobe -v error -select_streams a \
       -show_entries stream=codec_type \
       -of default=noprint_wrappers=1:nokey=1 "$out")
-    [[ -z "$audio_streams" ]] \
-      && pass "$prefix no audio stream" \
-      || fail "$prefix unexpected audio stream found"
+    [[ -n "$audio_streams" ]] \
+      && pass "$prefix audio stream present" \
+      || fail "$prefix no audio stream"
 
     if [[ "$VISUAL" -eq 1 ]]; then
       echo "  Opening $prefix render in mpv..."
@@ -79,7 +79,125 @@ test_run_hunt() {
   done
 }
 
+test_crop() {
+  echo "test_crop"
+  local tmp_dir
+  tmp_dir=$(mktemp -d)
+
+  # Case 1: default — audio should be present
+  CROP_START=00:10:00 CROP_LENGTH=5 \
+    "$SCRIPT" crop "$SOURCE" "$tmp_dir"
+
+  local out="$tmp_dir/cropped.mp4"
+
+  if [[ ! -f "$out" ]]; then
+    fail "output file missing"
+    rm -rf "$tmp_dir"
+    return
+  fi
+  pass "output file exists"
+
+  local codec
+  codec=$(ffprobe -v error -select_streams v:0 \
+    -show_entries stream=codec_name \
+    -of default=noprint_wrappers=1:nokey=1 "$out")
+  [[ "$codec" == "h264" ]] \
+    && pass "codec is h264" \
+    || fail "codec is '$codec' (expected h264)"
+
+  local width height
+  width=$(ffprobe -v error -select_streams v:0 \
+    -show_entries stream=width \
+    -of default=noprint_wrappers=1:nokey=1 "$out")
+  height=$(ffprobe -v error -select_streams v:0 \
+    -show_entries stream=height \
+    -of default=noprint_wrappers=1:nokey=1 "$out")
+  [[ "$width" == "960" && "$height" == "720" ]] \
+    && pass "resolution is 960x720" \
+    || fail "resolution is ${width}x${height} (expected 960x720)"
+
+  local audio_streams
+  audio_streams=$(ffprobe -v error -select_streams a \
+    -show_entries stream=codec_type \
+    -of default=noprint_wrappers=1:nokey=1 "$out")
+  [[ -n "$audio_streams" ]] \
+    && pass "audio stream present" \
+    || fail "no audio stream"
+
+  if [[ "$VISUAL" -eq 1 ]]; then
+    echo "  Opening crop render in mpv..."
+    mpv --no-deinterlace "$out"
+  fi
+
+  rm -rf "$tmp_dir"
+}
+
+test_glitch() {
+  echo "test_glitch"
+  local tmp_dir
+  tmp_dir=$(mktemp -d)
+
+  local synth="$tmp_dir/synth.mp4"
+  ffmpeg -y -f lavfi -i "color=c=blue:size=960x720:rate=25:duration=3" \
+    -c:v libx264 -preset veryfast "$synth" 2>/dev/null
+
+  "$SCRIPT" glitch "$synth" "$tmp_dir"
+
+  local out="$tmp_dir/glitch.mpg"
+
+  if [[ ! -f "$out" ]]; then
+    fail "output file missing"
+    rm -rf "$tmp_dir"
+    return
+  fi
+  pass "output file exists"
+
+  local codec
+  codec=$(ffprobe -v error -select_streams v:0 \
+    -show_entries stream=codec_name \
+    -of default=noprint_wrappers=1:nokey=1 "$out")
+  [[ "$codec" == "mpeg2video" ]] \
+    && pass "codec is mpeg2video" \
+    || fail "codec is '$codec' (expected mpeg2video)"
+
+  local width height
+  width=$(ffprobe -v error -select_streams v:0 \
+    -show_entries stream=width \
+    -of default=noprint_wrappers=1:nokey=1 "$out")
+  height=$(ffprobe -v error -select_streams v:0 \
+    -show_entries stream=height \
+    -of default=noprint_wrappers=1:nokey=1 "$out")
+  [[ "$width" == "720" && "$height" == "480" ]] \
+    && pass "resolution is 720x480" \
+    || fail "resolution is ${width}x${height} (expected 720x480)"
+
+  local field_order
+  field_order=$(ffprobe -v error -select_streams v:0 \
+    -show_entries stream=field_order \
+    -of default=noprint_wrappers=1:nokey=1 "$out")
+  [[ "$field_order" == "bb" ]] \
+    && pass "field_order is bb" \
+    || fail "field_order is '$field_order' (expected bb)"
+
+  local audio_streams
+  audio_streams=$(ffprobe -v error -select_streams a \
+    -show_entries stream=codec_type \
+    -of default=noprint_wrappers=1:nokey=1 "$out")
+  [[ -z "$audio_streams" ]] \
+    && pass "no audio stream" \
+    || fail "unexpected audio stream found"
+
+  if [[ "$VISUAL" -eq 1 ]]; then
+    echo "  Opening glitch render in mpv..."
+    mpv --no-deinterlace "$out"
+  fi
+
+  rm -rf "$tmp_dir"
+}
+
 test_run_hunt
+test_crop
+test_glitch
 
 echo
 echo "Results: $PASS passed, $FAIL failed"
